@@ -1,33 +1,39 @@
+using System;
+using Flunt.Validations;
+using PaymentContext.Domain.ValueObjects;
+using PaymentContext.Shared.Entities;
+
 namespace PaymentContext.Domain.Entities
 {
-  public abstract class Payment /* abstract -> não posso instanciar essa classe direto */
+  public abstract class Payment : Entity /* abstract -> não posso instanciar essa classe direto */
   {
-    public string PaymentNumber { get; set; }
-    public DateTime PaidDate { get; set; }
-    public DateTime ExpireDate { get; set; }
-    public decimal Total { get; set; }
-    public decimal TotalPaid { get; set; }
-    public string Payer { get; set; }
-    public string Document { get; set; }
-    public string Adress { get; set; }
-    public string Email { get; set; }
-  }
+    public Payment(DateTime paidDate, DateTime expireDate, decimal total, decimal totalPaid, string payer, Document document, Address address, Email email)
+    {
+      PaymentNumber = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 10).ToUpper();
+      PaidDate = paidDate;
+      ExpireDate = expireDate;
+      Total = total;
+      TotalPaid = totalPaid;
+      Payer = payer;
+      Document = document;
+      Address = address;
+      Email = email;
 
-  public class BoletoPayment : Payment
-  {
-    public string BarCode { get; set; }
-    public string BoletoNumber { get; set; }
-  }
+      AddNotifications(new Contract()
+        .Requires()
+        .IsLowerOrEqualsThan(0, Total, "Payment.Total", "The total cannot be zero")
+        .IsLowerOrEqualsThan(Total, TotalPaid, "Payment.TotalPaid", "The total paid cannot be less than the amount payment")
+      );
+    }
 
-  public class CreditCardPayment : Payment
-  {
-    public string CardHolderName { get; set; }
-    public string CardNumber { get; set; }
-    public string LastTransactionNumber { get; set; }
-  }
-  
-  public class PayPalPayment : Payment
-  {
-    public string TransactionCode { get; set; }
+    public string PaymentNumber { get; private set; }
+    public DateTime PaidDate { get; private set; }
+    public DateTime ExpireDate { get; private set; }
+    public decimal Total { get; private set; }
+    public decimal TotalPaid { get; private set; }
+    public string Payer { get; private set; }
+    public Document Document { get; private set; }
+    public Address Address { get; private set; }
+    public Email Email { get; private set; }
   }
 }
