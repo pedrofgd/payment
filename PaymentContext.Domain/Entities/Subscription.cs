@@ -29,7 +29,7 @@ namespace PaymentContext.Domain.Entities
     {
       AddNotifications(new Contract()
         .Requires()
-        .IsGreaterThan(DateTime.Now, payment.PaidDate, "Subscritpion.Payments", "The paid date cannot be in the past")
+        .IsGreaterThan(DateTime.Now, payment.PaidDate, "Subscritpion.Payments", "The payment date cannot be in the past")
       );
 
       if (Valid)

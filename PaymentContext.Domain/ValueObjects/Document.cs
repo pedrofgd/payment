@@ -7,17 +7,14 @@ namespace PaymentContext.Domain.ValueObjects
   public class Document : ValueObject
   {
     public Document(string number, EDocumentType type)
-    {
+    {   
+      Number = number;
+      Type = type;
+
       AddNotifications(new Contract()
         .Requires()
         .IsTrue(Validate(), "Document.Number", "Invalid document")
       );
-      
-      if (Valid)
-      {
-        Number = number;
-        Type = type;
-      }
     }
     
     public string Number { get; private set; }

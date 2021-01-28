@@ -7,11 +7,6 @@ namespace PaymentContext.Domain.ValueObjects
   {
     public Address(string street, string number, string neighborhood, string city, string state, string country, string zipcode)
     {
-      AddNotifications(new Contract()
-        .Requires()
-        .HasMinLen(Street, 3, "Address.Street", "Street should have at least 3 chars")
-      );
-
       Street = street;
       Number = number;
       City = city;
@@ -19,6 +14,11 @@ namespace PaymentContext.Domain.ValueObjects
       State = state;
       Country = country;
       ZipCode = zipcode;
+
+      AddNotifications(new Contract()
+        .Requires()
+        .HasMinLen(Street, 3, "Address.Street", "Street should have at least 3 chars")
+      );
     }
     
     public string Street { get; private set; }

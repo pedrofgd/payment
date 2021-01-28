@@ -7,6 +7,9 @@ namespace PaymentContext.Domain.ValueObjects
   {
     public Name(string firstname, string lastname)
     {
+      FirstName = firstname;
+      LastName = lastname;
+      
       AddNotifications(new Contract()
         .Requires()
         .HasMinLen(FirstName, 2, "Name.FirstName", "First name should have at least 3 chars")
@@ -14,15 +17,15 @@ namespace PaymentContext.Domain.ValueObjects
         .HasMinLen(LastName, 2, "Name.LastName", "Last name should have at least 3 chars")
         .HasMaxLen(LastName, 40, "Name.LastName", "Last name should have no more than 3 chars")
       );
-
-      if (Valid)
-      {
-        FirstName = firstname;
-        LastName = lastname;
-      }
     }
     
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
+
+
+    public override string ToString()
+    {
+      return $"{FirstName} {LastName}";
+    }
   }
 }

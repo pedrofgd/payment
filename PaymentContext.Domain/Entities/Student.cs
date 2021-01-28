@@ -27,11 +27,11 @@ namespace PaymentContext.Domain.Entities
 
     public void AddSubscription(Subscription subscription)
     {
-      var hasSubsciptionActive = _subscriptions.Any(x => x.Active);
+      var hasSubscriptionActive = _subscriptions.Any(x => x.Active);
 
       AddNotifications(new Contract()
         .Requires()
-        .IsFalse(hasSubsciptionActive, "Student.Subscription", "You already have an active subscription")
+        .IsFalse(hasSubscriptionActive, "Student.Subscription", "You already have an active subscription")
         .AreNotEquals(0, subscription.Payments.Count, "Student.Subscription.Payments", "This subscription has no payments")
       );
 
