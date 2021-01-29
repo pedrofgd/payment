@@ -29,15 +29,18 @@ namespace PaymentContext.Domain.Handler
       // Fail Fast Validation
       command.Validate();
       if (command.Invalid)
+      {
+        AddNotifications(command);
         return new CommandResult(false, "It was not possible finish your subscription");
+      }
 
       // Document exists
       if (_repository.DocumentExists(command.Document))
-        return new CommandResult(false, "This document already have a subscription");
+        AddNotification("Document", "This document already have a subscription");
 
       // Email exists
       if (_repository.EmailExists(command.Email))
-        return new CommandResult(false, "This email already have a subscription");
+        AddNotification("Email", "This email already have a subscription");
 
       // Generate Value Objects
       var name = new Name(command.FirstName, command.LastName);
